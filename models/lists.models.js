@@ -10,7 +10,7 @@ const ListSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  list:{
+  gifts:{
     required: true,
     type: []
   },
@@ -19,6 +19,6 @@ const ListSchema = new mongoose.Schema({
     required: true
   }
 
-})
+});
 
 module.exports=mongoose.model('List', ListSchema);
