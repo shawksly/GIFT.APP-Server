@@ -16,6 +16,7 @@ const db = mongoose.connection;
 db.once('open', ()=>console.log(`connected to: ${MONGO}`));
 
 app.use(express.json());
+app.use(require('cors')());
 
 //! CONTROLLERS TO BE PLACED HERE
 const users = require('./controllers/userController');
