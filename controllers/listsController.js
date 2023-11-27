@@ -35,12 +35,14 @@ router.post('/create',validateSession, async (req,res) => {
 
 //! LIST BY ID
 
-router.get('/list/:listId', validateSession, async (req,res) =>{
+router.get('/:listId', validateSession, async (req,res) =>{
 
   try{
-    const singleList= await List.findOne({ _id: req.params.roomId });
-    const user = await User.findbyId(singleList.owner);
+    
 
+    const singleList= await List.findOne({ listId: req.params.listId});
+    const user = await User.findById(singleList.owner);
+    
     res.status(200).json({ found: singleList, owner: user })
   
   }catch (err) {

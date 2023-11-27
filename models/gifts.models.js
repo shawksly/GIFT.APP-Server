@@ -15,8 +15,10 @@ const GiftSchema = new mongoose.Schema({
   },
   description:{
     type: String,
-    required: true
-  }
+    required: false
+  },
+  owner: String,
+  list: String
 })
 
 module.exports=mongoose.model('gifts', GiftSchema)
