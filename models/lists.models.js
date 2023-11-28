@@ -15,8 +15,7 @@ const ListSchema = new mongoose.Schema({
     type: []
   },
   owner:{
-    type: String,
-    required: true
+    type: String
   }
 
 });

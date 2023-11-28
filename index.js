@@ -21,11 +21,11 @@ app.use(require('cors')());
 //! CONTROLLERS TO BE PLACED HERE
 const users = require('./controllers/userController');
 const lists = require('./controllers/listsController')
-
+const gifts = require('./controllers/giftsController')
 //! App.use placed here
 app.use('/user',users)
 app.use('/lists',lists)
-
+app.use('/gifts',gifts)
 app.get('/test', (req,res)=> {
   res.status(200).json({message: `server is accessible`, port: process.env.PORT})
 })
