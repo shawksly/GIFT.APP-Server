@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const validateSession = require('../middleware/validateSession')
-const List = require("../models/lists.models")
-const User = require('../controllers/userController')
+const List = require('../models/lists.models')
+const User = require('../models/users.models')
 
 function errorRepsonse(res,err){
   res.status(500).json({
@@ -38,9 +38,17 @@ router.post('/create',validateSession, async (req,res) => {
 router.get('/:listId', validateSession, async (req,res) =>{
 
   try{
-    
+    console.log(req.params.listId)
+    const singleList= await List.findOne({ _id: req.params.listId});
 
-    const singleList= await List.findOne({ listId: req.params.listId});
+    if (!singleList) {
+      throw new Error("List not found");
+    }
+
+    if (!singleList.owner) {
+      throw new Error("List owner not found");
+    }
+
     const user = await User.findById(singleList.owner);
     
     res.status(200).json({ found: singleList, owner: user })
@@ -52,7 +60,7 @@ router.get('/:listId', validateSession, async (req,res) =>{
 
 //! All Lists
 
-router.get('/list', validateSession, async (req,res) => {
+router.get('/all/lists', validateSession, async (req,res) => {
 
   try{
     const getAllLists = await List.find()

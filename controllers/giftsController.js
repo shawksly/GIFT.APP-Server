@@ -20,6 +20,7 @@ router.post('/create/:listId', validateSession, async (req,res)=>{
       img: req.body.img,
       price: req.body.price,
       description: req.body.description,
+      link: req.body.link,
       owner: req.user._id,
       list: req.params.listId
     });
