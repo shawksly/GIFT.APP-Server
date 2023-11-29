@@ -17,6 +17,10 @@ const GiftSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  link:{
+    type: String,
+    required: false
+  },
   owner: String,
   list: String
 })
