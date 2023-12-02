@@ -29,5 +29,15 @@ app.use('/gifts',gifts)
 app.get('/test', (req,res)=> {
   res.status(200).json({message: `server is accessible`, port: process.env.PORT})
 })
+//! s3 STUFF
+
+
+const uploadURL = require('./s3');
+app.use(express.static("static"))
+app.get('/geturl', async (req,res)=>{
+  const url = await uploadURL()
+  console.log(url)
+  res.status(200).json(url)
+})
 
 app.listen(PORT, () => console.log(`App is listening on ${PORT}`))
