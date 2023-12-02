@@ -1,5 +1,5 @@
 const aws = require("aws-sdk");
-const crpto = require('crypto')
+const crypto = require('crypto')
 
 const region = "us-east-2"
 const bucketName = "gift.me"
@@ -10,7 +10,7 @@ const s3 = new aws.S3({
   region,
   accessKeyId,
   secretAccessKey,
-  signnature: "v4"
+  signature: "v4"
 });
 
 async function uploadURL(){
