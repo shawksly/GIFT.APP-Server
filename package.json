@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "aws-sdk": "^2.1509.0",
     "bcrypt": "^5.1.1",
     "brcypt": "^1.0.1",
     "cors": "^2.8.5",
