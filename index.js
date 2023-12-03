@@ -20,8 +20,8 @@ app.use(require('cors')());
 
 //! CONTROLLERS TO BE PLACED HERE
 const users = require('./controllers/userController');
-const lists = require('./controllers/listsController')
-const gifts = require('./controllers/giftsController')
+const lists = require('./controllers/listsController');
+const gifts = require('./controllers/giftsController');
 //! App.use placed here
 app.use('/user',users)
 app.use('/lists',lists)

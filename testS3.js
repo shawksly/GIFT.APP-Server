@@ -1,6 +1,6 @@
 imgFrom = document.querySelector("imgForm")
 
-imgForm.addEventListenter('submit', async (e) =>{
+imgForm.addEventListener('submit', async (e) =>{
   e.preventDefault();
   console.log(e)
   const file = e.target[0].files[0];

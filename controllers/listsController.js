@@ -19,6 +19,7 @@ router.post('/create',validateSession, async (req,res) => {
         title: req.body.title,
         description: req.body.description,
         gifts: [],
+        emoji: req.body.emoji,
         owner: req.user._id,
       })
 
