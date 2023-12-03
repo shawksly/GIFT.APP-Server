@@ -14,6 +14,11 @@ const ListSchema = new mongoose.Schema({
     required: true,
     type: []
   },
+  emoji:{
+    type:String,
+    required:false
+  
+  },
   owner:{
     type: String
   }
