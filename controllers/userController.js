@@ -13,7 +13,7 @@ const encryptPassword = (password) => {
 
 //! Signup Route
 
-router.post('/signup', async (req,res) =>{
+router.post('/signup', async (req, res) =>{
   
   try{
     const user = new User({
@@ -25,7 +25,7 @@ router.post('/signup', async (req,res) =>{
 
     const newUser = await user.save();
 
-    const token= jwt.sign({id: newUser ['_id']},process.env.JWT,{expiresIn: '1 day'});
+    const token= jwt.sign({ id: newUser['_id'] },process.env.JWT,{ expiresIn: '1 day' });
 
     res.status(200).json({
       user: newUser,
@@ -35,7 +35,7 @@ router.post('/signup', async (req,res) =>{
 
   }catch (err){
     res.status(500).json({
-      ERROR: err.messaege
+      ERROR: err.message
     });
   }
 });
