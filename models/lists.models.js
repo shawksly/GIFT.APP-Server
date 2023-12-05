@@ -17,7 +17,9 @@ const ListSchema = new mongoose.Schema({
   emoji:{
     type:String,
     required:false
-  
+  },
+  shared:{
+    type: []
   },
   owner:{
     type: String
