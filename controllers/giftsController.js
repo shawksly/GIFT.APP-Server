@@ -53,11 +53,12 @@ router.get('/gift/:listId',validateSession, async (req,res) =>{
   try{
     const getGifts = await Gift.find({list: req.params.listId})
 
-    getGifts.length > 0 ? 
+    if (getGifts.length > 0) {
     res.status(200).json({ getGifts })
-    :
+    } else {
     console.log('error', req.params.listId)
     res.status(404).json({ message: "no gifts found" })
+    };
 
   }catch (err){
     console.log(err)
