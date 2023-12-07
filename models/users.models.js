@@ -8,8 +8,7 @@ const UserSchema = new mongoose.Schema({
     unique: true,
   },
   img:{
-    type:String,
-    required: true
+    type:String
   },
   email:{
     type: String,
@@ -20,7 +19,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  following:{
+  friends:{
+    type: []
+  },
+  friendRequests:{
     type: []
   }
 });
