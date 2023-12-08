@@ -71,6 +71,39 @@ router.post('/login', async (req,res) =>{
   
 })
 
+//! UPDATE USER
+
+router.patch('/:userId',validateSession, async (req,res) =>{
+  try{
+    let _id = req.params.userId;
+    let owner = req.user.id;
+
+    let updatedInfo = req.body;
+
+    if(_id !== owner)
+      throw new Error("incorrect user")
+
+    if(!updatedInfo.password)
+      updatedInfo.password = bcrypt.hashSync(updatedInfo.password,10)
+
+    const updated = await User.findOneAndUpdate({_id}, updatedInfo, {new: true});
+
+    if (!updated)
+      throw new Error("Invalid User")
+
+    res.status(200).json({
+      message: `User ${updated._id} Updated`,
+      updated
+    })
+
+  }catch(err){
+    res.status(500).json({
+      ERROR: err.message
+    })
+  }
+
+})
+
 
 // post friend request
 router.post('/friends/:friendEmail', validateSession, async (req, res) => {
