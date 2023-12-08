@@ -71,6 +71,7 @@ router.post('/login', async (req,res) =>{
   
 })
 
+
 // post friend request
 router.post('/friends/:friendEmail', validateSession, async (req, res) => {
   try {
