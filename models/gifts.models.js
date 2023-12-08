@@ -6,8 +6,7 @@ const GiftSchema = new mongoose.Schema({
     required: true,
   },
   img:{
-    type: [],
-    required: false
+    type:String
   },
   price:{
     type: Number,

@@ -88,15 +88,15 @@ router.post('/friends/:friendEmail', validateSession, async (req, res) => {
       throw new Error("self-love is great, but this...?");
 
     // if their friends list includes us, and our friends list includes them
-    if (them.friends.includes(userId) && us.friends.includes(them._id))
+    if (them.friends?.includes(userId) && us.friends?.includes(them._id))
       throw new Error("Already friends!");
 
     // if we've already sent them a friend request (and our id is in their list) AND they haven't sent one to us
-    if (them.friendRequests.includes(userId))
+    if (them.friendRequests?.includes(userId))
       throw new Error("Friend request already sent!")
 
     // if we havent' sent a request, but they have, we're friends now!
-    if (!them.friendRequests.includes(userId) && us.friendRequests.includes(them._id)) {
+    if (!them.friendRequests?.includes(userId) && us.friendRequests?.includes(them._id)) {
 
       // add my id to their local array
       them.friends.push(userId);
@@ -105,8 +105,8 @@ router.post('/friends/:friendEmail', validateSession, async (req, res) => {
       const updatedThem = await User.findOneAndUpdate({ email: friendEmail }, { friends: them.friends }, { new: true });
 
       // remove their id from my local requests array
-      let index = us.friendRequests.indexOf(them._id);
-      us.friendRequests.splice(index, 1);
+      let index = us.friendRequests?.indexOf(them._id);
+      us.friendRequests?.splice(index, 1);
 
       // add it to my local friends array
       us.friends.push(them._id);
@@ -121,7 +121,7 @@ router.post('/friends/:friendEmail', validateSession, async (req, res) => {
       });
 
       // if we're both not on each other's friend requests list
-    } else if (!them.friendRequests.includes(userId) && !us.friendRequests.includes(them._id)) {
+    } else if (!them.friendRequests?.includes(userId) && !us.friendRequests?.includes(them._id)) {
 
       // add my id to their requests array
       them.friendRequests.push(userId);
@@ -157,17 +157,24 @@ router.get('/friends/list', validateSession, async (req, res) => {
     const { friends, friendRequests } = await User.findOne({_id: userId})
     console.log('1', friends, '2', friendRequests);
 
-    const friendsList = friends.forEach(async (friendId) => {
-      return await User.findOne({_id: friendId});
-    })
+    const friendsList = [];
+
+    for (const friendId of friends) {
+      const {_id, userName, img, email} = await User.findOne({_id: friendId});
+      friendsList.push({_id, userName, img, email})
+    }
 
     console.log(friendsList)
 
-    const friendRequestsList = friendRequests.forEach((friendRequestId) => {
-      return User.findOne({_id: friendRequestId});
-    })
+    const friendRequestsList = []
 
-    console.log(friendRequestsList)
+    for (const friendId of friendRequests) {
+      const {_id, userName, img, email} = await User.findOne({_id: friendId});
+      // {userName, img, email} = found;
+      friendRequestsList.push({_id, userName, img, email});
+    }
+
+    console.log("test", friendRequestsList)
 
     res.status(200).json({
       message: "Lists found!",
@@ -181,17 +188,6 @@ router.get('/friends/list', validateSession, async (req, res) => {
     });
   }
 });
-
-// get friend's lists
-// const friendslists = []
-
-// friends.forEach((userId) => {
-// const list = User.findOne( {_id: userId});
-//   list.forEach((listId) => {
-//     const temp = List.findOne({_id: listId})
-//     friendslistst.push(temp);
-//   })
-// })
 
 module.exports = router
 
