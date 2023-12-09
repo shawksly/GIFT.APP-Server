@@ -20,6 +20,7 @@ router.post('/create/:listId', validateSession, async (req,res)=>{
       img: req.body.img,
       price: req.body.price,
       description: req.body.description,
+      emoji: req.body.emoji,
       link: req.body.link,
       owner: req.user._id,
       list: req.params.listId
@@ -77,6 +78,7 @@ router.patch('/:listId/:giftId',validateSession, async (req,res) => {
       title: req.body.title,
       img: req.body.img,
       price: req.body.price,
+      emoji: req.body.emoji,
       description: req.body.description
       }
     
