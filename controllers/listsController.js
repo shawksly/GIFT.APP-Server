@@ -45,8 +45,16 @@ router.get('/friends', validateSession, async (req, res) => {
     const friendsLists = [];
 
     for (const friendId of friends) {
-      const list = await List.find({ owner: friendId });
-      if (list.length >= 1) friendsLists.push(list);
+      const list = await List.find({ owner: friendId }).lean();
+      if (list.length >= 1) friendsLists.push(...list);
+    }
+
+    for (let i=0; i < friendsLists.length; i++) {
+      const owner = await User.findOne({ _id: friendsLists[i].owner })
+      let {userName, email, img } = owner;
+      friendsLists[i].userName = userName;
+      friendsLists[i].email = email;
+      friendsLists[i].img = img;
     }
 
     friendsLists.length > 0
