@@ -22,6 +22,7 @@ router.post('/create/:listId', validateSession, async (req,res)=>{
       description: req.body.description,
       emoji: req.body.emoji,
       link: req.body.link,
+      purchased: false,
       owner: req.user._id,
       list: req.params.listId
     });
@@ -74,13 +75,7 @@ router.patch('/:listId/:giftId',validateSession, async (req,res) => {
   try{
     let _id = req.params.giftId;
     let owner = req.user.id
-    let updatedGift = {
-      title: req.body.title,
-      img: req.body.img,
-      price: req.body.price,
-      emoji: req.body.emoji,
-      description: req.body.description
-      }
+    let updatedGift = req.body
     
     const updated = await Gift.findOneAndUpdate({ _id: _id, owner:owner}, updatedGift, {new:true});
 

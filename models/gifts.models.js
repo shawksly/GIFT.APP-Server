@@ -24,6 +24,10 @@ const GiftSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  purchased:{
+    type: Boolean,
+    required: true
+  },
   owner: String,
   list: String
 })
