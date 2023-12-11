@@ -104,6 +104,89 @@ router.patch('/:userId',validateSession, async (req,res) =>{
 
 })
 
+// get list of friends (accepted and requested)
+router.get('/friends/list', validateSession, async (req, res) => {
+  try {
+    
+    let userId = req.user._id;
+
+    const { friends, friendRequests } = await User.findOne({_id: userId})
+    console.log('1', friends, '2', friendRequests);
+
+    const friendsList = [];
+
+    for (const friendId of friends) {
+      const {_id, userName, img, email} = await User.findOne({_id: friendId});
+      friendsList.push({_id, userName, img, email})
+    }
+
+    console.log(friendsList)
+
+    const friendRequestsList = []
+
+    for (const friendId of friendRequests) {
+      const {_id, userName, img, email} = await User.findOne({_id: friendId});
+      // {userName, img, email} = found;
+      friendRequestsList.push({_id, userName, img, email});
+    }
+
+    console.log("test", friendRequestsList)
+
+    res.status(200).json({
+      message: "Lists found!",
+      friendsList,
+      friendRequestsList
+    })
+
+  } catch (error) {
+    res.status(500).json({
+      ERROR: err.message
+    });
+  }
+});
+
+// remove friend
+router.delete('/friends/remove/:friendEmail', validateSession, async (req, res) => {
+  try {
+    let userId = req.user._id;
+    let { friendEmail } = req.params;
+
+    const them = await User.findOne({ email: friendEmail });
+    console.log('them ', them)
+
+    const us = await User.findOne({ _id: userId });
+    console.log('us ', us)
+
+    // if we're not friends, don't attempt this
+    if (!them.friends?.includes(userId) || !us.friends?.includes(them._id)) {
+      throw new Error("There was an error. You aren't friends.")
+    } else {
+
+      //remove us from their array
+      let themIndex = them.friends?.indexOf(userId);
+      them.friends?.splice(themIndex, 1);
+
+      //remove them from our array
+      let usIndex = us.friends?.indexOf(them._id);
+      us.friends?.splice(usIndex, 1);
+
+      // update both ddatabase entries
+      const updatedThem = await User.findOneAndUpdate({ email: friendEmail }, { friends: them.friends }, { new: true })
+      const updatedUs = await User.findOneAndUpdate({ _id: userId }, { friends: us.friends}, { new: true })
+
+      res.status(200).json({
+        message: 'Friends no more! Good riddance!',
+        You: {updatedUs},
+        Them: {updatedThem}
+      })
+    }
+
+  } catch (err) {
+    res.status(500).json({
+      ERROR: err.message
+    });
+  };
+});
 
 // post friend request
 router.post('/friends/:friendEmail', validateSession, async (req, res) => {
@@ -182,49 +265,4 @@ router.post('/friends/:friendEmail', validateSession, async (req, res) => {
   };
 });
 
-// get list of friends (accepted and requested)
-router.get('/friends/list', validateSession, async (req, res) => {
-  try {
-    
-    let userId = req.user._id;
-
-    const { friends, friendRequests } = await User.findOne({_id: userId})
-    console.log('1', friends, '2', friendRequests);
-
-    const friendsList = [];
-
-    for (const friendId of friends) {
-      const {_id, userName, img, email} = await User.findOne({_id: friendId});
-      friendsList.push({_id, userName, img, email})
-    }
-
-    console.log(friendsList)
-
-    const friendRequestsList = []
-
-    for (const friendId of friendRequests) {
-      const {_id, userName, img, email} = await User.findOne({_id: friendId});
-      // {userName, img, email} = found;
-      friendRequestsList.push({_id, userName, img, email});
-    }
-
-    console.log("test", friendRequestsList)
-
-    res.status(200).json({
-      message: "Lists found!",
-      friendsList,
-      friendRequestsList
-    })
-
-  } catch (error) {
-    res.status(500).json({
-      ERROR: err.message
-    });
-  }
-});
-
 module.exports = router
-
-// async findone
-// ERR_HTTP_HEADERS_SENT
-// adding amazon img string regardless if empty
