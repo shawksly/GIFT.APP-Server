@@ -70,7 +70,7 @@ router.get('/gift/:listId',validateSession, async (req,res) =>{
 
 //! Update Gift
 
-router.patch('/:listId/:giftId',validateSession, async (req,res) => {
+router.patch('/update/:giftId',validateSession, async (req,res) => {
 
   try{
     let _id = req.params.giftId;
@@ -92,9 +92,32 @@ router.patch('/:listId/:giftId',validateSession, async (req,res) => {
   }
 });
 
+//! Purchase Gift
+
+router.patch('/purchase/:giftId', async (req,res) => {
+
+  try{
+    let _id = req.params.giftId;
+    let updatedGift = req.body
+    
+    const updated = await Gift.findOneAndUpdate({ _id: _id}, updatedGift, {new:true});
+
+    if(!updated)
+      throw new Error('invalid list owner')
+
+    res.status(200).json({
+      message: "gift updated",
+      updated
+    })
+
+  }catch(err){
+    errorResponse(res,err)
+  }
+});
+
 //! delete gift
 
-router.delete('/:listId/:giftId',validateSession, async (req,res) =>{
+router.delete('/delete/:giftId',validateSession, async (req,res) =>{
 
   try{
     let { giftId }= req.params

@@ -105,7 +105,7 @@ router.get('/friends/list', validateSession, async (req, res) => {
       friendRequestsList
     })
 
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       ERROR: err.message
     });
