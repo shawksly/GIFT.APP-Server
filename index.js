@@ -9,11 +9,22 @@ const mongoose = require('mongoose')
 
 const{PORT,MONGO} = process.env;
 
-mongoose.connect(`${process.env.MONGO}`)
+// mongoose.connect(`${process.env.MONGO}`)
+// https://stackoverflow.com/questions/57337218/how-to-connect-to-specific-database-with-mongoose-and-node
+mongoose
+  .connect(MONGO, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: 'GIFTAPP-Database',
+  })
+  .then(() => {
+    console.log('Connected to the Database.');
+  })
+  .catch(err => console.error(err));
 
 const db = mongoose.connection;
 
-db.once('open', ()=>console.log(`connected to: ${MONGO}`));
+db.once('open', ()=>console.log(`connected to MongoDB!`));
 
 app.use(express.json());
 app.use(require('cors')());
