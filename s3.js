@@ -2,7 +2,7 @@ const aws = require("aws-sdk");
 const crypto = require('crypto')
 
 const region = "us-east-2"
-const bucketName = "gift.me"
+const bucketName = "gift.app-bucket"
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey= process.env.AWS_SECRET_ACCESS_KEY;
 
@@ -10,7 +10,7 @@ const s3 = new aws.S3({
   region,
   accessKeyId,
   secretAccessKey,
-  signature: "v4"
+  signatureVersion: "v4"
 });
 
 async function uploadURL(){
