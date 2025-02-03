@@ -3,13 +3,13 @@ const crypto = require('crypto')
 
 const region = "us-east-2"
 const bucketName = "gift.app-bucket"
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey= process.env.AWS_SECRET_ACCESS_KEY;
+const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
+const AWS_SECRET_ACCESS_KEY= process.env.AWS_SECRET_ACCESS_KEY;
 
 const s3 = new aws.S3({
   region,
-  accessKeyId,
-  secretAccessKey,
+  accessKeyId: AWS_ACCESS_KEY_ID,
+  secretAccessKey: AWS_SECRET_ACCESS_KEY,
   signatureVersion: "v4"
 });
 
