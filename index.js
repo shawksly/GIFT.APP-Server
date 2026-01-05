@@ -7,7 +7,7 @@ const app = express();
 
 const mongoose = require('mongoose')
 
-const{PORT,MONGO} = process.env;
+const{PORT,HOST, MONGO} = process.env;
 
 // mongoose.connect(`${process.env.MONGO}`)
 // https://stackoverflow.com/questions/57337218/how-to-connect-to-specific-database-with-mongoose-and-node
@@ -51,4 +51,4 @@ app.get('/geturl', async (req,res)=>{
   res.status(200).json(url)
 })
 
-app.listen(PORT, () => console.log(`App is listening on ${PORT}`))
+app.listen(PORT, HOST, () => console.log(`App is listening on ${PORT}`))
